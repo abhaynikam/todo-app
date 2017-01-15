@@ -15,8 +15,8 @@ class ListTodos extends React.Component {
 
   toggleTodo(event) {
     let todoId = event.target.dataset.identifier,
-      completed = !event.target.dataset.completed;
-    this.props.dispatch(toggleTodo(todoId, completed));
+      completed = JSON.parse(event.target.dataset.completed);
+    this.props.dispatch(toggleTodo(todoId, !completed));
   }
 
   getTodoItem(item) {
