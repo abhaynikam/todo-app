@@ -1,11 +1,13 @@
 import { connect } from 'react-redux';
 import { listTodos, destroyTodo, toggleTodo } from '../actions/todoActions';
+import { completedTodoList } from '../actions/filterActions';
 
 class ListTodos extends React.Component {
   constructor(props) {
     super(props);
     this.destroyTodo = this.destroyTodo.bind(this);
     this.toggleTodo = this.toggleTodo.bind(this);
+    this.handleTodoListFilter = this.handleTodoListFilter.bind(this);
   }
 
   destroyTodo(event) {
@@ -14,9 +16,13 @@ class ListTodos extends React.Component {
   }
 
   toggleTodo(event) {
-    let todoId = event.target.dataset.identifier,
-      completed = JSON.parse(event.target.dataset.completed);
-    this.props.dispatch(toggleTodo(todoId, !completed));
+    let todoId = event.target.dataset.identifier;
+    this.props.dispatch(toggleTodo(todoId));
+  }
+
+  handleTodoListFilter(event) {
+    let filterType = event.target.dataset.filter;
+    this.props.dispatch(completedTodoList(filterType));
   }
 
   getTodoItem(item) {
@@ -39,7 +45,6 @@ class ListTodos extends React.Component {
             </a>
             <a href="javascript:void(0);"
               data-identifier={item.id}
-              data-completed={item.completed}
               onClick={this.toggleTodo}
               className="pull-right deleteTodo glyphicon glyphicon-ok"
             >
@@ -53,19 +58,38 @@ class ListTodos extends React.Component {
 
   render() {
     return(
-      <div className="todoItems col-sm-12">
-        <ul className="list-group col-sm-9">
-          {this.renderTodoItems()}
-        </ul>
+      <div className="todosContainer">
+        <div className="todoFilterContainer col-sm-12">
+          <a href="javascript:void(0);"
+            data-filter="COMPLETED_TODO_LIST"
+            className="completedTodoAction col-sm-4"
+            onClick={this.handleTodoListFilter}
+          >
+            Completed Todo List
+          </a>
+          <a href="javascript:void(0);"
+            data-filter="INCOMPLETE_TODO_LIST"
+            className="completedTodoAction col-sm-4"
+            onClick={this.handleTodoListFilter}
+          >
+            InCompleted Todo List
+          </a>
+          <a href="javascript:void(0);"
+            data-filter="SHOW_ALL"
+            className="completedTodoAction col-sm-4"
+            onClick={this.handleTodoListFilter}
+          >
+            Show All
+          </a>
+        </div>
+        <div className="todoItems col-sm-12">
+          <ul className="list-group col-sm-9">
+            {this.renderTodoItems()}
+          </ul>
+        </div>
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => ({
-  todos: state.todos
-})
-
-export default connect(
-  mapStateToProps
-)(ListTodos);
+export default ListTodos;

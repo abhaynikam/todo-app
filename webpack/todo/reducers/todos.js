@@ -37,7 +37,7 @@ const todo = (state, action) => {
       return {
         id: state.id,
         text: state.text,
-        completed: action.completed
+        completed: !state.completed
       };
     default:
       return state;

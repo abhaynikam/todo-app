@@ -23,11 +23,10 @@ export function destroyTodo(identifier) {
   };
 }
 
-export function toggleTodo(identifier, completed) {
+export function toggleTodo(identifier) {
   return {
     type: actionTypes.COMPLETED_TODO,
-    identifier: identifier,
-    completed: completed
+    identifier: identifier
   };
 }
 
